@@ -3,6 +3,16 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+class TituloVacioException extends Exception {
+    public TituloVacioException(String mensaje) {
+        super(mensaje);
+    }
+}class NoTemaSeleccionadoException extends Exception {
+    public NoTemaSeleccionadoException(String mensaje) {
+        super(mensaje);
+    }
+}
+
 public class Formulario {
     private JTextField textField1;
     private JTextField textField2;
@@ -49,6 +59,25 @@ public class Formulario {
             consiste_en.add(tema=new Tema("Terror"));
         }
 
+        if (consiste_en.isEmpty()) {
+            try {
+                throw new NoTemaSeleccionadoException("Error: Debe seleccionar al menos un tema.");
+            } catch (NoTemaSeleccionadoException e) {
+                JOptionPane.showMessageDialog(Panel_Principal, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+String titulo = textField2.getText().trim();
+        if (titulo.length() < 1 || (titulo.length() == 1 && titulo.equals(" "))) {
+            try {
+                throw new TituloVacioException("Error: El título no puede estar vacío o ser solo un espacio.");
+            } catch (TituloVacioException e) {
+                JOptionPane.showMessageDialog(Panel_Principal, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+
+        
         //Crear el nuevo libro
         try {
              librohecho = new Libro(textField2.getText(), Integer.parseInt(textField1.getText()), textField3.getText());
